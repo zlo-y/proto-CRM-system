@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Management System</title>
+</head>
+<body class="bg-gray-100 p-8">
+    <div id="app" class="max-w-4xl mx-auto space-y-8">
+        
+        <div class="bg-white p-6 rounded shadow">
+            <h2 class="text-2xl font-bold mb-4">Создание проекта (Шаг {{ step }}/5)</h2>
+            <form @submit.prevent="submitProject">
+                <div v-if="step === 1" class="space-y-2">
+                    <input v-model="form.name" placeholder="Название проекта" class="border p-2 w-full">
+                    <input type="date" v-model="form.startDate" class="border p-2 w-full">
+                    <input type="date" v-model="form.endDate" class="border p-2 w-full">
+                    <input type="number" v-model="form.priority" placeholder="Приоритет" class="border p-2 w-full">
+                </div>
+                <div v-if="step === 2" class="space-y-2">
+                    <input v-model="form.customer" placeholder="Заказчик" class="border p-2 w-full">
+                    <input v-model="form.executor" placeholder="Исполнитель" class="border p-2 w-full">
+                </div>
+                <div v-if="step === 3" class="space-y-2">
+                    <input @input="searchEmployees" v-model="empQuery" placeholder="Поиск руководителя..." class="border p-2 w-full">
+                    <select v-model="form.managerId" class="border p-2 w-full"><option v-for="e in employees" :value="e.id">{{e.name}} {{e.lastName}}</option></select>
+                </div>
+                <div v-if="step === 4" class="space-y-2">
+                    <h3 class="font-semibold">Выберите исполнителей:</h3>
+                    <input @input="searchEmployees" placeholder="Поиск..." class="border p-2 w-full">
+                    <div class="h-32 overflow-y-auto border p-2 bg-gray-50">
+                        <label v-for="e in employees" :key="e.id" class="flex items-center gap-2">
+                            <input type="checkbox" :value="e.id" v-model="form.executorIds"> {{e.name}} {{e.lastName}}
+                        </label>
+                    </div>
+                </div>
+                <div v-if="step === 5" @drop.prevent="handleDrop" @dragover.prevent class="border-2 border-dashed p-10 text-center">
+                    Перетащите документы сюда <input type="file" multiple @change="handleFiles" class="mt-2">
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                    <button type="button" @click="step--" v-if="step > 1" class="bg-gray-300 px-4 py-2 rounded">Назад</button>
+                    <button type="button" @click="step++" v-if="step < 5" class="bg-blue-600 text-white px-4 py-2 rounded">Далее</button>
+                    <button type="submit" v-if="step === 5" class="bg-green-600 text-white px-4 py-2 rounded">Создать проект</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow">
+            <h2 class="text-xl font-bold mb-4">Список проектов</h2>
+            <table class="w-full border-collapse border">
+                <tr v-for="p in projects" :key="p.id">
+                    <td class="border p-2">{{p.name}}</td>
+                    <td class="border p-2">
+                        <button @click="deleteProject(p.id)" class="text-red-600">Удалить</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Управление задачами</h2>
+    <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-2 border-r pr-4">
+            <input v-model="newTask.name" placeholder="Название" class="border p-2 w-full">
+            <input v-model="newTask.comments" placeholder="Комментарий" class="border p-2 w-full"> <select v-model="newTask.projectId" class="border p-2 w-full">
+                <option value="">Выберите проект</option>
+                <option v-for="p in projects" :value="p.id">{{p.name}}</option>
+            </select>
+            <button @click="createTask" class="bg-emerald-600 text-white p-2 w-full rounded">Добавить задачу</button>
+        </div>
+        
+        <div class="space-y-2">
+            <select v-model="filterStatus" @change="loadTasks" class="border p-2 w-full">
+                <option value="">Все статусы</option>
+                <option value="0">ToDo</option><option value="1">InProgress</option><option value="2">Done</option>
+            </select>
+            <div v-for="t in tasks" :key="t.id" class="border-b pb-2">
+                <div class="flex justify-between items-center">
+                    <span class="font-bold">{{t.name}}</span>
+                    <button @click="deleteTask(t.id)" class="text-red-600 text-sm">✕</button>
+                </div>
+                <p class="text-sm text-gray-500 italic">{{t.comments}}</p> <select v-model="t.status" @change="updateTaskStatus(t)" class="border p-1 mt-1 text-sm">
+                    <option value="0">ToDo</option><option value="1">InProgress</option><option value="2">Done</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        const API = 'http://localhost:5226/api';
+        Vue.createApp({
+            data() {
+                return {
+                    step: 1, empQuery: '', employees: [], projects: [], tasks: [], filterStatus: '',
+                    form: { name: '', startDate: '', endDate: '', priority: 0, customer: '', executor: '', managerId: null, executorIds: [], uploadedFiles: [] },
+                    newTask: { name: '', comments: '', projectId: '', status: 0 }
+                }
+            },
+            methods: {
+                async loadProjects() { const r = await fetch(`${API}/projects`); this.projects = await r.json(); },
+                async loadTasks() { const r = await fetch(`${API}/tasks?status=${this.filterStatus}`); this.tasks = await r.json(); },
+                async searchEmployees(e) { const r = await fetch(`${API}/employees?search=${e.target.value}`); this.employees = await r.json(); },
+                async deleteProject(id) { await fetch(`${API}/projects/${id}`, { method: 'DELETE' }); this.loadProjects(); },
+                async deleteTask(id) { await fetch(`${API}/tasks/${id}`, { method: 'DELETE' }); this.loadTasks(); },
+                
+                async updateTaskStatus(t) {
+                    await fetch(`${API}/tasks/${t.id}/status?status=${t.status}`, { method: 'PATCH' });
+                    this.loadTasks();
+                },
+                async createTask() {
+                    await fetch(`${API}/tasks`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(this.newTask) });
+                    this.loadTasks();
+                },
+                handleDrop(e) { this.form.uploadedFiles = e.dataTransfer.files; },
+                handleFiles(e) { this.form.uploadedFiles = e.target.files; },
+                async submitProject() {
+                    const fd = new FormData();
+                    for(let key in this.form) fd.append(key, this.form[key]);
+                    await fetch(`${API}/projects`, { method: 'POST', body: fd });
+                    this.step = 1; this.loadProjects();
+                }
+            },
+            mounted() { this.loadProjects(); this.loadTasks(); }
+        }).mount('#app')
+    </script>
+</body>
+</html>

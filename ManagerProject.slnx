@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Manager.BusinessLogic/Manager.BusinessLogic.csproj" />
+  <Project Path="Manager.DataAccess/Manager.DataAccess.csproj" />
+  <Project Path="Manager.WebAPI/Manager.WebAPI.csproj" />
+</Solution>
