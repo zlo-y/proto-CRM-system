@@ -1,3 +1,6 @@
+[![English](https://img.shields.io/badge/Language-Русский-blue.svg)](README.md)
+[![Russian](https://img.shields.io/badge/Language-English-red.svg)](README.en.md)
+
 # Manager API
 
 Backend для системы управления проектами, задачами и сотрудниками. REST API на ASP.NET Core с JWT-аутентификацией, ролевой моделью доступа и хранением файлов проектов.
