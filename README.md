@@ -72,7 +72,7 @@ Manager.DataAccess       → сущности EF Core, репозитории, D
 
 1. Склонируй репозиторий:
    ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
+   git clone https://github.com/<zlo-y>/<proto-CRM-system>.git
    cd <repo-name>
    ```
 
