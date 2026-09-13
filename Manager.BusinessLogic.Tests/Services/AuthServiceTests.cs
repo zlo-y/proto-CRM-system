@@ -99,10 +99,7 @@ public class AuthServiceTests
         _userManagerMock.Setup(m => m.ResetAccessFailedCountAsync(user)).ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(m => m.GetRolesAsync(user)).ReturnsAsync(new List<string>());
 
-        _employeesRepoMock.Setup(r => r.GetAll()).Returns(new List<Employee>().AsQueryable());
-        _employeesRepoMock
-            .Setup(r => r.ToListAsync(It.IsAny<IQueryable<Employee>>(), It.IsAny<CancellationToken>()))
-            .Returns((IQueryable<Employee> q, CancellationToken ct) => Task.FromResult(q.ToList()));
+        _employeesRepoMock.Setup(r => r.GetAll()).Returns(new List<Employee>().AsAsyncQueryable());
 
         var dto = new LoginDto { Email = user.Email, Password = "correct-password" };
 
@@ -123,10 +120,7 @@ public class AuthServiceTests
         _userManagerMock.Setup(m => m.ResetAccessFailedCountAsync(user)).ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(m => m.GetRolesAsync(user)).ReturnsAsync(new List<string> { "Employee" });
 
-        _employeesRepoMock.Setup(r => r.GetAll()).Returns(new List<Employee> { employee }.AsQueryable());
-        _employeesRepoMock
-            .Setup(r => r.ToListAsync(It.IsAny<IQueryable<Employee>>(), It.IsAny<CancellationToken>()))
-            .Returns((IQueryable<Employee> q, CancellationToken ct) => Task.FromResult(q.ToList()));
+        _employeesRepoMock.Setup(r => r.GetAll()).Returns(new List<Employee> { employee }.AsAsyncQueryable());
 
         var dto = new LoginDto { Email = user.Email, Password = "correct-password" };
 
@@ -150,7 +144,6 @@ public class AuthServiceTests
 
         await act.Should().ThrowAsync<ConflictException>();
 
-        // Транзакция не должна была даже начаться, раз проверка провалилась раньше
         _unitOfWorkMock.Verify(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
