@@ -6,6 +6,9 @@ using Microsoft.VisualBasic;
 
 namespace Manager.WebAPI.Middlewares;
 
+// 
+// Обработчик исключений, который перехватывает необработанные исключения в конвейере обработки запросов и формирует стандартный ответ API с соответствующим кодом состояния и сообщением.
+// 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;

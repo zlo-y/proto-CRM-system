@@ -10,6 +10,10 @@ using Manager.BusinessLogic.Mappings;
 using Manager.BusinessLogic.Exceptions;
 
 
+// 
+// Сервис для управления проектами, реализующий интерфейс IProjectService. 
+// 
+
 namespace Manager.BusinessLogic.Services;
 
 public class ProjectService: IProjectService

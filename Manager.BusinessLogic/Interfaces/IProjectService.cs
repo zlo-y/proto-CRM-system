@@ -5,6 +5,9 @@ using Manager.BusinessLogic.DTOs.Responses;
 using System.Threading.Channels;
 
 namespace Manager.BusinessLogic.Interfaces;
+// 
+// Интерфейс для сервиса управления проектами, предоставляющий методы для получения списка проектов, создания проекта, обновления проекта и удаления проекта.
+// 
 
 public interface IProjectService
 {

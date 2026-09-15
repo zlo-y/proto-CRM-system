@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 
-
+// 
+// Сервис для управления файловым хранилищем, реализующий интерфейс IFileStorageService.
+// 
 
 namespace Manager.BusinessLogic.Services;
 

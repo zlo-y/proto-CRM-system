@@ -9,6 +9,9 @@ using Manager.WebAPI.Extensions;
 
 namespace Manager.WebAPI.Controllers;
 
+// 
+// Контроллер для управления сотрудниками, предоставляющий методы для получения списка сотрудников, обновления информации о сотруднике и удаления сотрудника.
+// 
 [Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -24,7 +27,6 @@ public class EmployeesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployees([FromQuery] string? search, CancellationToken cancellationToken)
     {
-        /// Get all employees from service, handle null search string
         var employees = await _employeeService.GetAllEmployeesAsync(search ?? "", cancellationToken);
         return Ok(ApiResponse<IEnumerable<EmployeeDto>>.Ok(employees, "Список сотрудников успешно получен."));
     }
@@ -33,7 +35,6 @@ public class EmployeesController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] EmployeeUpdateDto dto, CancellationToken cancellationToken)
     {
-        /// Check if route ID matches body ID to prevent data inconsistency
         if (id != dto.Id)
         {
             return BadRequest(ApiResponse.Fail("ID в маршруте не совпадает с ID в теле запроса."));
@@ -47,7 +48,6 @@ public class EmployeesController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        /// Try to delete and check if it actually existed
         var isDeleted = await _employeeService.DeleteEmployeeAsync(id, cancellationToken);
         if (!isDeleted)
         {

@@ -3,6 +3,10 @@ using Manager.DataAccess.Entities;
 
 namespace Manager.DataAccess.Interfaces;
 
+// 
+// Интерфейс для репозитория, предоставляющий методы для получения всех сущностей, получения сущности по идентификатору, добавления, обновления и удаления сущности, а также проверки существования сущности и получения пагинированного списка сущностей.
+// 
+
 public interface IRepository<T> where T : class
 {
     IQueryable<T> GetAll();

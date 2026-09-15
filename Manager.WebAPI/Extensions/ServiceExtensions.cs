@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
+
+// 
+// Используется для расширения функциональности сервисов приложения, добавляя конфигурацию для Identity, JWT-аутентификации и проверки состояния здоровья.
+// 
 
 namespace Manager.WebAPI.Extensions;
 

@@ -2,6 +2,9 @@ using Manager.DataAccess.Entities;
 
 namespace Manager.DataAccess.Interfaces;
 
+// 
+// Паттерн Unit of Work, предоставляющий доступ к репозиториям для различных сущностей и методы для управления транзакциями и сохранения изменений в базе данных.
+// 
 public interface IUnitOfWork: IDisposable
 {
     IRepository<Employee> Employees { get; }

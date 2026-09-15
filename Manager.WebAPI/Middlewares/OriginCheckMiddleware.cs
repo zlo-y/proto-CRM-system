@@ -1,5 +1,8 @@
 namespace Manager.WebAPI.Middlewares;
 
+// 
+// Обработчик промежуточного программного обеспечения, который проверяет источник (Origin) входящих HTTP-запросов и блокирует запросы с недопустимыми источниками, если они не являются безопасными методами и содержат JWT в куки.
+// 
 public class OriginCheckMiddleware
 {
     private static readonly HashSet<string> SafeMethods = new(StringComparer.OrdinalIgnoreCase)

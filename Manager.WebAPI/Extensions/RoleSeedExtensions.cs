@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
-using Manager.DataAccess.Entities;
-
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace Manager.WebAPI.Extensions;
+
+// 
+// Используется для инициализации ролей в системе, создавая необходимые роли, если они еще не существуют.
+// 
 
 public static class RoleSeedExtensions
 {

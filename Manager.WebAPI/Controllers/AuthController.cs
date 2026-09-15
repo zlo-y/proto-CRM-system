@@ -4,7 +4,9 @@ using Manager.BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.RateLimiting;
 using Manager.WebAPI.Extensions;
 
-
+// 
+// Контроллер для аутентификации пользователей, предоставляющий методы для регистрации, входа в систему, восстановления и сброса пароля.
+// 
 namespace Manager.WebAPI.Controllers;
 
 [ApiController]
@@ -60,10 +62,10 @@ public class AuthController : ControllerBase
     {
         var cookieOptions = new CookieOptions
         {
-            HttpOnly = true, // Запрещает доступ к куке из JavaScript (защита от XSS)
-            Secure = true,   // Кука передается только по HTTPS (обязательно для прода!)
-            SameSite = SameSiteMode.None, // Защита от CSRF-атак
-            Expires = DateTime.UtcNow.AddDays(7) // Совпадает со временем жизни токена
+            HttpOnly = true, 
+            Secure = true,  
+            SameSite = SameSiteMode.None,
+            Expires = DateTime.UtcNow.AddDays(7) 
         };
 
         Response.Cookies.Append("jwt", token, cookieOptions);

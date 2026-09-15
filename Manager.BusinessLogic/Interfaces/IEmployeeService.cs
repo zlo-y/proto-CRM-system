@@ -4,6 +4,10 @@ using Manager.DataAccess.Entities;
 
 namespace Manager.BusinessLogic.Interfaces;
 
+// 
+// Интерфейс для сервиса управления сотрудниками, предоставляющий методы для получения списка сотрудников, обновления информации о сотруднике и удаления сотрудника.
+// 
+
 public interface IEmployeeService
 {
     Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync(string search,CancellationToken cancellationToken = default);

@@ -11,9 +11,9 @@ using Manager.BusinessLogic.Models;
 
 namespace Manager.WebAPI.Controllers;
 
-/// Controller for managing project tasks
-/// Handles CRUD operations and status/assignment updates
-/// 
+// 
+// Контроллер для управления задачами, предоставляющий методы для получения списка задач проекта, создания задачи, назначения исполнителя и обновления статуса задачи. 
+// 
 [Authorize]
 [ApiController]
 [Route("api/v1/[controller]")]
@@ -31,7 +31,6 @@ public class TasksController : ControllerBase
     public async Task<ActionResult<List<ProjectTaskDto>>> GetProjectTasks([FromQuery] int? projectId, [FromQuery] TaskStatus? status,
         [FromQuery] string? sortBy, [FromQuery] string? order , [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
     {
-        /// Get filtered and sorted list of tasks
         var tasks = await _taskService.GetProjectTasksAsync(projectId, status, sortBy ?? "", order ?? "", pageNumber, pageSize, cancellationToken);
         return Ok(ApiResponse<PagedResult<ProjectTaskDto>>.Ok(tasks, "Список задач успешно получен."));
     }
@@ -47,7 +46,6 @@ public class TasksController : ControllerBase
     [HttpPatch("{id:int}/assign")]
     public async Task<IActionResult> AssignTask(int id, [FromBody] int? executorId, CancellationToken cancellationToken)
     {
-            /// Update the assigned employee for the task
             await _taskService.AssignTaskExecutorAsync(id, executorId, _currentUserProvider.GetEmployeeId(), _currentUserProvider.IsAdmin(), cancellationToken);
             return NoContent();
     }
@@ -55,7 +53,6 @@ public class TasksController : ControllerBase
     [HttpPatch("{id:int}/status")]
     public async Task<IActionResult> UpdateStatus(int id, [FromQuery] TaskStatus status, CancellationToken cancellationToken)
     {
-            /// Change current task progress status
             await _taskService.UpdateTaskStatusAsync(id, status, _currentUserProvider.GetEmployeeId(), _currentUserProvider.IsAdmin(), cancellationToken);
             return NoContent();
     }

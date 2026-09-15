@@ -1,5 +1,8 @@
 namespace Manager.BusinessLogic.Exceptions;
 
+// 
+//  Ошибки приложения, включая NotFoundException, ConflictException, ValidationAppException, AuthenticationFailedException и ForbiddenException.
+// 
 public class NotFoundException: Exception
 {
     public NotFoundException(string message) : base(message){}

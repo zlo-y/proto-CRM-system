@@ -1,5 +1,8 @@
 namespace Manager.BusinessLogic.Models;
 
+// 
+// Модель для хранения настроек электронной почты, включая хост, порт, учетные данные и адрес отправителя. 
+// 
 public class EmailSettings
 {
     public string Host { get; set; } = string.Empty;

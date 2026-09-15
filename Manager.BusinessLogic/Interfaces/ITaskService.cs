@@ -1,11 +1,13 @@
 using Manager.BusinessLogic.DTOs;
 using Manager.BusinessLogic.DTOs.Responses;
 using Manager.BusinessLogic.Models;
-using Manager.DataAccess.Entities;
 using TaskStatus = Manager.DataAccess.Enums.TaskStatus;
 
 namespace Manager.BusinessLogic.Interfaces;
 
+// 
+// Интерфейс для сервиса управления задачами, предоставляющий методы для получения списка задач проекта, создания задачи, назначения исполнителя и обновления статуса задачи.
+// 
 public interface ITaskService
 {
     Task<PagedResult<ProjectTaskDto>> GetProjectTasksAsync(int? projectId, TaskStatus? status, string sortBy, string order , int pageNumber, int pageSize,CancellationToken cancellationToken = default);

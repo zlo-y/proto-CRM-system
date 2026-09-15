@@ -2,6 +2,9 @@ using System.Security.Claims;
 using Manager.BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Http;
 
+// 
+// Сервис для предоставления информации о текущем пользователе, реализующий интерфейс ICurrentUserProvider.
+// 
 namespace Manager.BusinessLogic.Providers;
 
 public class CurrentUserProvider : ICurrentUserProvider

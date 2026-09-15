@@ -1,5 +1,8 @@
 namespace Manager.WebAPI.Middlewares;
 
+// 
+// Обработчик промежуточного программного обеспечения, который добавляет заголовки безопасности к HTTP-ответам, чтобы улучшить защиту приложения от различных атак, таких как XSS, Clickjacking и утечки данных.
+// 
 public class SecurityHeadersMiddleware
 {
     private readonly RequestDelegate _next;

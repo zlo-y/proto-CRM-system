@@ -2,6 +2,9 @@ using System.Threading.Channels;
 
 namespace Manager.BusinessLogic.Models;
 
+// 
+// Модель для хранения настроек файлового хранилища, включая максимальный размер файла, разрешенные расширения и корневой путь загрузки.
+// 
 public class FileSettings
 {
     public long MaxFileSize{get;set;}

@@ -9,6 +9,9 @@ using Manager.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 
 
+// 
+// Сервис для управления сотрудниками, реализующий интерфейс IEmployeeService.
+// 
 namespace Manager.BusinessLogic.Services;
 
 public class EmployeeService : IEmployeeService
@@ -28,14 +31,15 @@ public class EmployeeService : IEmployeeService
             .GetAllWithIncludes(e => e.User)
             .AsNoTracking();
 
-        /// Case-insensitive search across name fields
+
         if (!string.IsNullOrWhiteSpace(search))
         {
+            var normalizedSearch = search.ToLower();
             search = search.ToLower();
             query = query.Where(e => 
-                e.Name.Contains(search) || 
-                e.LastName.Contains(search) ||
-                e.MiddleName.Contains(search));
+                e.Name.ToLower().Contains(normalizedSearch) ||
+                e.LastName.ToLower().Contains(normalizedSearch) ||
+                e.MiddleName.ToLower().Contains(normalizedSearch));
         }
 
         var result = await _unitOfWork.Employees.ToListAsync(query, cancellationToken);

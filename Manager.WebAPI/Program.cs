@@ -34,8 +34,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-// ... после builder.Services.AddControllers() и т.д.
-
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -76,7 +74,6 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 builder.Services.Configure<FileSettings>(builder.Configuration.GetSection("FileSettings"));
-// Настройка подключения к SQLite базы данных
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 

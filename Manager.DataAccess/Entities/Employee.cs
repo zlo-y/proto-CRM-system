@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Manager.DataAccess.Entities;
 
     public class Employee

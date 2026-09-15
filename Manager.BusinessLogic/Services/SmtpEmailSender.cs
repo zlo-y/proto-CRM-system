@@ -6,6 +6,9 @@ using Manager.BusinessLogic.Models;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
+// 
+//  Сервис для отправки электронных писем через SMTP, реализующий интерфейс IEmailSender.
+// 
 namespace Manager.BusinessLogic.Services;
 
 public class SmtpEmailSender : IEmailSender

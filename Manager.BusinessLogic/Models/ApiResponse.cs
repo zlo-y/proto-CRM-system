@@ -1,5 +1,8 @@
 namespace Manager.WebAPI.Extensions;
 
+// 
+// Модель   для формирования стандартного ответа API, содержащего информацию об успешности операции и сообщение.
+// 
 public class ApiResponse
 {
     public bool Success { get; set; }

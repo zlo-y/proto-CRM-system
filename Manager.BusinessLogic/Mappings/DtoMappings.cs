@@ -5,6 +5,9 @@ using Manager.DataAccess.Entities;
 
 namespace Manager.BusinessLogic.Mappings;
 
+// 
+// Маппинг-расширения для преобразования сущностей в DTO и наоборот, включая задачи, проекты, документы и сотрудников.
+// 
 public static class DtoMappings
 {
     public static EmployeeDto ToDto(this Employee employee) => new()

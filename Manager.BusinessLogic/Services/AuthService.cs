@@ -10,7 +10,9 @@ using Manager.DataAccess.Interfaces;
 using Manager.BusinessLogic.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-
+// 
+// Сервис аутентификации и авторизации, реализующий интерфейс IAuthService.
+// 
 
 namespace Manager.BusinessLogic.Services;
 

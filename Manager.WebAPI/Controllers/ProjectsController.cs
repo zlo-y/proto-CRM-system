@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Manager.BusinessLogic.Models;
 using Manager.BusinessLogic.DTOs.Responses;
 using Manager.WebAPI.Extensions;
-using Manager.BusinessLogic.Exceptions;
+
 
 namespace Manager.WebAPI.Controllers;
+
+// 
+// Контроллер для управления проектами, предоставляющий методы для получения списка проектов, создания, обновления и удаления проектов, а также добавления и удаления сотрудников из проекта.
+// 
 
 [Authorize]
 [ApiController]
@@ -36,7 +40,6 @@ public class ProjectsController : ControllerBase
         [FromQuery] int pageSize = 10,
         CancellationToken cancellationToken = default)
     {
-        /// Fetch filtered and sorted projects from service
         var projects = await _projectService.GetAllProjectsAsync(startFrom, startTo, priority, sortBy ?? "", order ?? "" , pageNumber, pageSize, cancellationToken);
         return Ok(ApiResponse<PagedResult<ProjectListDto>>.Ok(projects, "Список проектов успешно получен."));
     }
@@ -44,7 +47,6 @@ public class ProjectsController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProjectDetailDto>> GetById(int id, CancellationToken cancellationToken)
     {
-        /// Return 404 if project doesn't exist
         var project = await _projectService.GetProjectByIdAsync(id, cancellationToken);
         if (project == null)
         {
@@ -56,7 +58,6 @@ public class ProjectsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] ProjectServiceDto dto, CancellationToken cancellationToken)
     {
-            /// Pass web root path for potential file saving logic
             await _projectService.CreateProjectAsync(dto, cancellationToken);
             return StatusCode(201, ApiResponse.Ok("Проект успешно создан."));
     }
@@ -64,7 +65,6 @@ public class ProjectsController : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] ProjectUpdateDto project, CancellationToken cancellationToken)
     {
-        /// Ensure ID consistency between URL and request body
         if (id != project.Id)
         {
             return BadRequest(ApiResponse.Fail("ID в маршруте не совпадает с ID в теле запроса."));
@@ -77,7 +77,6 @@ public class ProjectsController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
-        /// Verify existence before returning success status
         var isDeleted = await _projectService.DeleteProjectAsync(id, _currentUserProvider.GetEmployeeId(), _currentUserProvider.IsAdmin(), cancellationToken);
         if (!isDeleted)
         {
@@ -89,7 +88,6 @@ public class ProjectsController : ControllerBase
     [HttpPost("{projectId}/employees/{employeeId}")]
     public async Task<IActionResult> AddEmployee(int projectId, int employeeId, CancellationToken cancellationToken)
     {
-        /// Link employee to project
         await _projectService.AddEmployeeProject(projectId, employeeId, _currentUserProvider.GetEmployeeId(), _currentUserProvider.IsAdmin(), cancellationToken);
         return Ok();
     }
@@ -97,7 +95,6 @@ public class ProjectsController : ControllerBase
     [HttpDelete("{projectId}/employees/{employeeId}")]
     public async Task<IActionResult> RemoveEmployee(int projectId, int employeeId, CancellationToken cancellationToken)
     {
-        /// Unlink employee from project
         await _projectService.RemoveEmployeeFromProjectAsync(projectId, employeeId, _currentUserProvider.GetEmployeeId(), _currentUserProvider.IsAdmin(), cancellationToken);
         return NoContent();
     }

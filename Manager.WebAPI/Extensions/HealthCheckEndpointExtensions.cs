@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace Manager.WebAPI.Extensions;
 
+// 
+// Используется для расширения функциональности маршрутизации конечных точек приложения, добавляя поддержку проверки состояния здоровья приложения.
+// 
 public static class HealthCheckEndpointExtensions
 {
     public static IEndpointRouteBuilder MapAppHealthChecks(this IEndpointRouteBuilder app)

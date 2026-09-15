@@ -9,6 +9,9 @@ using Manager.BusinessLogic.DTOs.Responses;
 using Manager.BusinessLogic.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
+// 
+// Сервис для управления задачами, реализующий интерфейс ITaskService.
+// 
 
 namespace Manager.BusinessLogic.Services;
 
@@ -81,7 +84,6 @@ public class TaskService : ITaskService{
 
         await _unitOfWork.ProjectTasks.AddAsync(task, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
     }
 
     public async Task AssignTaskExecutorAsync(int taskId, int? executorId,int currentEmployeeId, bool isAdmin, CancellationToken cancellationToken = default)
